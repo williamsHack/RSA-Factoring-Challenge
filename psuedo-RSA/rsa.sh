@@ -1,33 +1,19 @@
-#include "factor.h"
+s many numbers as possible into a product of two smaller numbers.
 
-/**
- * main - main function
- *
- * Author: Thaoban Abdrasheed
- * Return: void
- */
-int main(int argc, char *argv[])
-{
-	FILE *fptr;
-	size_t count;
-	ssize_t line;
-	char *buffer = NULL;
-
-
-	if (argc != 2)
-	{
-		fprintf(stderr, "Usage: factor <filename>\n");
-		exit(EXIT_FAILURE);
-	}
-	fptr = fopen(argv[1], "r");
-	if (fptr == NULL)
-	{
-		fprintf(stderr, "Error: can't open file %s\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
-	while((line = getline(&buffer, &count, fptr)) != -1)
-	{
-		factorize(buffer);
-	}
-return (0);
-}
+while IFS= read -r LINE
+do
+    let FLAG=1
+    let DIV=2
+    while [ $FLAG -eq 1 ]
+    do
+	REST=$(($LINE%$DIV))
+	if [[ $REST -eq 0 ]]
+        then
+            let NUM=$LINE
+            let COUNT=$(($NUM/$DIV))
+            echo "$LINE=$COUNT*$DIV"
+            let FLAG=0
+        fi
+        let DIV=$(($DIV+1))
+    done
+done < $1
